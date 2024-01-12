@@ -8,7 +8,9 @@ const Navbar = () => {
   const [state, setState] = React.useState(false);
 
   const menus = [
-    { title: "Home", path: "/" },
+    { title: "Register", path: "/register" },
+    { title: "Login", path: "/login" },
+
     // { title: "Blog", path: "/your-path" },
     // { title: "About Us", path: "/your-path" },
     // { title: "Contact Us", path: "/your-path" },
@@ -35,7 +37,7 @@ const Navbar = () => {
             state ? "block" : "hidden"
           }`}
         >
-          <ul className="justify-center items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
+          <ul className="justify-end items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
             {menus.map((item, idx) => (
               <li key={idx} className="text-gray-600 hover:text-indigo-600">
                 <Link href={item.path}>{item.title}</Link>
