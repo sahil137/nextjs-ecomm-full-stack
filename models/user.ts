@@ -17,9 +17,12 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       minLength: 5,
-      maxLength: 20,
+      maxLength: 50,
     },
-    password: String,
+    password: {
+      type: String,
+      select: false,
+    },
     role: {
       type: String,
       default: "user",
@@ -36,6 +39,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.models.User || mongoose.model("User", userSchema);
