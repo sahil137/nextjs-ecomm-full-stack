@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import uniqueValidator from "mongoose-unique-validator";
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      select: false,
     },
     role: {
       type: String,
@@ -38,5 +37,7 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.plugin(uniqueValidator, { message: "User Already Exists!" });
 
 export default mongoose.models.User || mongoose.model("User", userSchema);

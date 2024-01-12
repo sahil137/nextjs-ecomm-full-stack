@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnection from "@/config/mongoose";
 import User from "@/models/user";
 import bcrypt from "bcrypt";
+import { StatusCodes } from "http-status-codes";
 
 interface PayLoad {
   name: string;
@@ -16,9 +17,7 @@ export async function POST(req: Request) {
     const body: PayLoad = await req.json();
 
     const { email, name, password } = body;
-
     const hashedPassword = await bcrypt.hash(password || "", 10);
-
     const user = new User({
       email,
       name,
@@ -26,11 +25,11 @@ export async function POST(req: Request) {
     });
     await user.save();
     return NextResponse.json(
-      { success: true, message: "User Registered Successfully" },
+      { success: true, message: "Registration successfull. Please Login" },
       { status: 200 }
     );
   } catch (error: any) {
     console.log(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }

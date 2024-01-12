@@ -7,15 +7,17 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
+import { ButtonLoading } from "../ui/button-loading";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import * as z from "zod";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 const registerSchema = z.object({
@@ -27,6 +29,7 @@ const registerSchema = z.object({
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const RegistrationForm = () => {
+  const router = useRouter();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -36,10 +39,24 @@ const RegistrationForm = () => {
     },
   });
 
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (values: RegisterFormValues) =>
+      axios
+        .post(`http://localhost:3000/api/register`, values)
+        .then((res) => res.data),
+  });
+
   async function onSubmit(values: RegisterFormValues) {
     try {
-    } catch (error) {
+      const res = await mutateAsync({
+        ...values,
+      });
+      console.log(res);
+      toast.success(res.message);
+      router.push("/login");
+    } catch (error: any) {
       console.log(error);
+      toast.error(error.message);
     }
   }
 
@@ -90,9 +107,11 @@ const RegistrationForm = () => {
             )}
           />
           <div className="flex justify-center">
-            <Button type="submit" className="sm:w-full md:w-1/2">
-              Submit
-            </Button>
+            {isPending ? (
+              <ButtonLoading />
+            ) : (
+              <Button type="submit">Submit</Button>
+            )}
           </div>
         </form>
       </Form>
