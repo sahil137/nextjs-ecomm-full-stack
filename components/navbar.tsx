@@ -3,17 +3,16 @@
 import * as React from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [state, setState] = React.useState(false);
 
+  const { data, status } = useSession();
+  console.log(data, status);
   const menus = [
     { title: "Register", path: "/register" },
     { title: "Login", path: "/login" },
-
-    // { title: "Blog", path: "/your-path" },
-    // { title: "About Us", path: "/your-path" },
-    // { title: "Contact Us", path: "/your-path" },
   ];
 
   return (
@@ -38,11 +37,24 @@ const Navbar = () => {
           }`}
         >
           <ul className="justify-end items-center space-y-8 md:flex md:space-x-6 md:space-y-0">
-            {menus.map((item, idx) => (
-              <li key={idx} className="text-gray-600 hover:text-indigo-600">
-                <Link href={item.path}>{item.title}</Link>
-              </li>
-            ))}
+            {status === "authenticated" ? (
+              <>
+                <li
+                  className="text-gray-600 hover:text-indigo-600 cursor-pointer"
+                  onClick={() => signOut({ callbackUrl: "/login" })}
+                >
+                  Logout
+                </li>
+                <li className="text-gray-600 hover:text-indigo-600">
+                  {data?.user?.name}
+                </li>
+              </>
+            ) : (
+              <>
+                <Link href="/register">Register</Link>
+                <Link href="/login">Login</Link>
+              </>
+            )}
           </ul>
         </div>
       </div>

@@ -42,7 +42,7 @@ const RegistrationForm = () => {
   const { isPending, mutateAsync } = useMutation({
     mutationFn: (values: RegisterFormValues) =>
       axios
-        .post(`http://localhost:3000/api/register`, values)
+        .post(`${process.env.API_URL}/register`, values)
         .then((res) => res.data),
   });
 
@@ -100,7 +100,7 @@ const RegistrationForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="" {...field} />
+                  <Input type="password" placeholder="******" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
