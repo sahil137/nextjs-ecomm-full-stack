@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <NextAuthSessionProvider>
         <ReactQueryProvider>
-          <body className={inter.className}>
+          <body className={`${inter.className}`}>
             <Navbar />
             {children}
             <Toaster position="top-right" theme="dark" />

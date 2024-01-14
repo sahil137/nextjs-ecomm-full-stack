@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
 import { signIn } from "next-auth/react";
@@ -27,6 +27,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const router = useRouter();
+  const seachParams = useSearchParams();
+  const callbackUrl = seachParams.get("callbackUrl") || "/";
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -47,7 +49,7 @@ const LoginForm = () => {
         return;
       }
       toast.success("Logged in Successfully");
-      router.push("/");
+      router.push(callbackUrl);
       console.log(res);
     } catch (error: any) {
       console.log(error);

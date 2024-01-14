@@ -16,8 +16,8 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white w-full border-b md:border-0 border border-black">
-      <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
+    <nav className="bg-white w-full border-b md:border-0 border border-black shadow-lg">
+      <div className="items-center max-w-screen-xl mx-auto md:flex md:px-8">
         <div className="flex items-center justify-between py-3 md:py-5 md:block">
           <Link href="/">
             <h1 className="text-3xl font-bold">🛒 Ecommerce</h1>
