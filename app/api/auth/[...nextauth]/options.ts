@@ -43,5 +43,22 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      console.log("user in jwt callback", user);
+      if (user) {
+        token.role = user?.role;
+      }
+      //   token.id = user.id;
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (token && session?.user) {
+        session.user.role = token?.role;
+      }
+      // console.log("In Session callback", session);
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
